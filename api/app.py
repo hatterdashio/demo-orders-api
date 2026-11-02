@@ -15,6 +15,10 @@ def create_app(db_path=None):
         customer = request.get_json()["customer"]
         return jsonify(id=orders.create_order(db, customer)), 201
 
+    @app.get("/orders/search")
+    def search():
+        return jsonify(orders.search_orders(db, request.args.get("customer", "")))
+
     @app.get("/orders/<int:order_id>")
     def show(order_id):
         order = orders.get_order(db, order_id)

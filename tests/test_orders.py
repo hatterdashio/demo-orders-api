@@ -17,3 +17,10 @@ def test_create_and_show_order(client):
 
 def test_unknown_order_is_404(client):
     assert client.get("/orders/99").status_code == 404
+
+
+def test_search_finds_orders_by_customer(client):
+    client.post("/orders", json={"customer": "Ada Lovelace"})
+    client.post("/orders", json={"customer": "Grace Hopper"})
+    found = client.get("/orders/search?customer=Ada").get_json()
+    assert [order["customer"] for order in found] == ["Ada Lovelace"]

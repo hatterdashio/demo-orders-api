@@ -30,3 +30,8 @@ def get_order(db, order_id):
         "SELECT id, customer, status FROM orders WHERE id = ?", (order_id,)
     ).fetchone()
     return dict(row) if row else None
+
+
+def search_orders(db, customer):
+    rows = db.execute(f"SELECT id, customer, status FROM orders WHERE customer LIKE '%{customer}%'").fetchall()
+    return [dict(row) for row in rows]
