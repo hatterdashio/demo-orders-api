@@ -35,3 +35,8 @@ def get_order(db, order_id):
 def search_orders(db, customer):
     rows = db.execute(f"SELECT id, customer, status FROM orders WHERE customer LIKE '%{customer}%'").fetchall()
     return [dict(row) for row in rows]
+
+
+def mark_shipped(db, order_id):
+    db.execute("UPDATE orders SET status = 'shipped' WHERE id = ?", (order_id,))
+    db.commit()
